@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  base: './',
   plugins: [react()],
   css: {
     postcss: './postcss.config.js',
@@ -19,15 +20,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    assetsDir: 'assets',
-    rollupOptions: {
-      output: {
-        manualChunks: undefined
-      }
-    }
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom']
+    assetsDir: 'assets'
   },
   publicDir: 'public'
 });
