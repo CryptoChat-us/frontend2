@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(180deg, #FFCE0F 0%, #FFFFFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .tracking-title {
+    letter-spacing: -0.02em;
+  }
+}
+
+@font-face {
+  font-family: 'Sequel Sans Display';
+  src: url('@assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Light Disp.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sequel Sans Display';
+  src: url('@assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Roman Disp.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sequel Sans Display';
+  src: url('@assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Medium Disp.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sequel Sans Display';
+  src: url('@assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Bold Disp.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Power_Grotesk_Trial';
+  /* src: url('@assets/fonts/Power_Grotesk_Trial.otf') format('opentype'); */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme('colors.secondary.100');
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme('colors.secondary.300');
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.secondary.400');
+}

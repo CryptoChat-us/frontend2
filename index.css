@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Regular */
+@font-face {
+  font-family: 'Sequel Sans';
+  src: url('/src/assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Roman Body.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Medium */
+@font-face {
+  font-family: 'Sequel Sans';
+  src: url('/src/assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Medium Body.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Semi Bold */
+@font-face {
+  font-family: 'Sequel Sans';
+  src: url('/src/assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Semi Bold Body.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Sequel Sans';
+  src: url('/src/assets/fonts/Sequel Sans OTF/Sequel Sans OTF/Sequel Sans Bold Body.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2e2e2e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
