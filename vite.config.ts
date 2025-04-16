@@ -20,6 +20,14 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   },
-  publicDir: 'public',
+  optimizeDeps: {
+    include: ['react', 'react-dom']
+  },
+  publicDir: 'public'
 });
