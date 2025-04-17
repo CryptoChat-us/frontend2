@@ -1,17 +1,16 @@
 // src/components/layout/TopBarTitle.tsx
 
 const TopBarTitle = () => {
-    return (
+  return (
     <div className="flex items-center gap-1">
-    <span className="text-white text-2xl font-light font-['Power_Grotesk_Trial']">
-    Crypto
-    </span>
-    <span className="text-white text-2xl font-light font-['Power_Grotesk_Trial']">
-    Chat
-    </span>
+      <span className="text-white text-2xl font-['PowerGrotesk'] crypto-chat-text tracking-wider">
+        Crypto
+      </span>
+      <span className="text-white text-2xl font-['PowerGrotesk'] crypto-chat-text tracking-wider">
+        Chat
+      </span>
     </div>
-    );
-    };
+  );
+};
     
-    export default TopBarTitle;
-    
+export default TopBarTitle;

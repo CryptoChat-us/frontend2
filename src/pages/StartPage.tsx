@@ -24,7 +24,7 @@ const StartPage = () => {
       <div className="w-full md:w-[40%] min-h-screen flex flex-col items-center justify-center relative px-8 -mt-56">
         <div className="w-full max-w-[240px] flex flex-col items-center">
           {/* Title */}
-          <h1 className="bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-200 bg-clip-text text-transparent text-[38px] font-['Sequel Sans'] font-semibold mb-6">
+          <h1 className="text-gradient text-[38px] font-['Sequel Sans'] font-semibold mb-6">
             Início
           </h1>
 

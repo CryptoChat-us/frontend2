@@ -1,15 +1,23 @@
-    // src/components/layout/UserAvatar.tsx
-    
-    const UserAvatar = () => {
-        return (
-        <div className="w-12 h-12 bg-white rounded-full shadow-md outline outline-1 outline-white/40 overflow-hidden">
+    // src/components/UserAvatar.tsx
+import { useState } from 'react';
+
+const UserAvatar = () => {
+  const [imageError, setImageError] = useState(false);
+  
+  return (
+    <div className="w-10 h-10 bg-neutral-900 rounded-full flex items-center justify-center outline outline-1 outline-white/20 overflow-hidden">
+      {imageError ? (
+        <span className="text-yellow-400 text-lg font-bold">U</span>
+      ) : (
         <img
-        src="/assets/fotodeperfilusuario.png"
-        alt="User Avatar"
-        className="w-[55px] h-[59px] object-cover -translate-x-[6px]"
+          src="/assets/fotodeperfilusuario.png" 
+          alt="User Avatar"
+          className="w-full h-full object-cover"
+          onError={() => setImageError(true)}
         />
-        </div>
-        );
-        };
+      )}
+    </div>
+  );
+};
         
-        export default UserAvatar;
+export default UserAvatar;
