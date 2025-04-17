@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { validateEmail } from '../utils/validateEmail';
+import logoCryptoChat from '../assets/logo-cryptochat.png';
+import iconEmail from '../assets/icon-email.svg';
+import iconSenha from '../assets/icon-senha.svg';
 
 import { supabase } from '../services/supabaseClient';
 
@@ -108,20 +111,21 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="w-screen h-screen relative bg-black overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="w-screen h-screen bg-black flex justify-center items-center overflow-hidden"
+    >
       {/* Glow Background */}
-      <div className="w-[720px] h-[722px] left-[585px] top-[230px] absolute origin-top-left rotate-[-7.46deg] opacity-90 mix-blend-screen bg-yellow-700 rounded-[30.7px] blur-[147.79px]" />
+      <div className="w-[480px] h-[480px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 origin-center rotate-[-7.46deg] opacity-90 mix-blend-screen bg-yellow-700 rounded-[20px] blur-[100px]" />
       
       {/* Card */}
-      <div className="w-[648px] h-[808px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute bg-black/70 rounded-2xl outline outline-1 outline-neutral-600 backdrop-blur-[29.70px]">
-        {/* Header */}
-        <div className="flex items-center justify-center mt-[40px]">
-          <div className="flex items-center gap-3">
-            <img src="/assets/logo-cryptochat.png" alt="logo" className="w-8 h-8" />
-            <span className="text-white text-2xl font-light font-['Power_Grotesk_Trial']">
-              Crypto Chat
-            </span>
-          </div>
+      <div className="w-[440px] h-[640px] relative mx-auto bg-black/70 rounded-xl outline outline-1 outline-neutral-600 backdrop-blur-[30px] my-8">
+        {/* Logo and Title */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-[40px] flex items-center gap-3">
+          <img src={logoCryptoChat} alt="Logo" className="w-8 h-8" />
+          <span className="text-white text-3xl font-power-grotesk font-light">Crypto Chat</span>
         </div>
 
         <AnimatePresence mode="wait">
@@ -132,45 +136,50 @@ export default function SignupPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.3 }}
-              className="mt-16 px-[58px]"
             >
-              <h1 className="text-yellow-400 text-[32px] font-['Sequel_Sans'] font-medium mb-10 text-center">
-                Criar uma conta Crypto!
-              </h1>
+              <div className="absolute left-1/2 -translate-x-1/2 top-[100px] flex flex-col items-center w-[380px]">
+                {/* Headline */}
+                <div className="text-[37px] leading-[44px] font-normal font-['Sequel Sans Display'] tracking-title text-gradient pb-1">
+                  Criar uma conta Crypto!
+                </div>
+              </div>
 
-              <form onSubmit={handleStepOne} className="flex flex-col items-center gap-6 mt-8 px-12">
-                <div className="w-full h-[52px] px-4 rounded-lg bg-black/40 outline outline-1 outline-neutral-400 flex items-center gap-3">
-                  <img src="/assets/icon-email.svg" className="w-5 h-5" alt="" />
+              <form onSubmit={handleStepOne} className="w-full">
+                {/* E-mail Field */}
+                <div className="w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[180px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+                  <img src={iconEmail} alt="E-mail Icon" className="w-6 h-6" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="E-mail"
-                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica_Now_Display'] focus:outline-none"
+                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica'] focus:outline-none focus:opacity-100 transition-opacity"
                     required
                   />
                 </div>
 
-                <div className="w-full h-[52px] px-4 rounded-lg bg-black/40 outline outline-1 outline-neutral-400 flex items-center gap-3">
-                  <img src="/assets/icon-senha.svg" className="w-5 h-5" alt="" />
+                {/* Password Field */}
+                <div className="w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[250px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+                  <img src={iconSenha} alt="Senha Icon" className="w-7 h-7" />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Senha"
-                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica_Now_Display'] focus:outline-none"
+                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica'] focus:outline-none focus:opacity-100 transition-opacity"
                     required
                   />
                 </div>
 
-                <div className="w-full h-[52px] px-4 rounded-lg bg-black/40 outline outline-1 outline-neutral-400 flex items-center gap-3">
-                  <img src="/assets/icon-senha.svg" className="w-5 h-5" alt="" />
+                {/* Confirm Password Field */}
+                <div className="w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[320px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+                  <img src={iconSenha} alt="Senha Icon" className="w-7 h-7" />
                   <input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirmar Senha"
-                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica_Now_Display'] focus:outline-none"
+                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica'] focus:outline-none focus:opacity-100 transition-opacity"
                     required
                   />
                 </div>
@@ -179,56 +188,56 @@ export default function SignupPage() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="text-center text-red-500 text-sm font-sequel"
+                    className="absolute left-1/2 -translate-x-1/2 top-[365px] text-center text-red-500 text-sm font-['Helvetica'] w-[380px]"
                   >
                     {error}
                   </motion.div>
                 )}
 
+                {/* Entrar Button */}
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleStepOne}
+                  type="submit"
+                  whileHover={{ opacity: 0.9 }}
+                  whileTap={{ opacity: 0.95 }}
                   disabled={loading}
-                  className="w-full h-[52px] bg-gradient-to-t from-yellow-400 to-yellow-200 rounded-lg flex justify-center items-center shadow-lg"
+                  className={`w-[380px] h-14 absolute top-[390px] left-1/2 -translate-x-1/2 bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-200 rounded-lg flex items-center justify-center ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:from-yellow-200 hover:to-yellow-400'}`}
                 >
-                  <span className="text-black text-base font-medium font-['Sequel_Sans']">
+                  <span className="text-zinc-950 text-sm font-['Helvetica']">
                     {loading ? 'Criando conta...' : 'Entrar'}
-                  </span>
-                </motion.button>
-
-                {/* Divider + Google */}
-                <div className="w-full flex items-center gap-4 my-2">
-                  <div className="flex-1 h-[1px] bg-white/20" />
-                  <span className="text-white/40 text-sm">ou</span>
-                  <div className="flex-1 h-[1px] bg-white/20" />
-                </div>
-                
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleGoogleSignup}
-                  disabled={loading}
-                  type="button"
-                  className="w-full h-[52px] rounded-lg outline outline-1 outline-neutral-400 flex justify-center items-center opacity-60 hover:opacity-100 transition-opacity"
-                >
-                  <span className="text-white text-base font-normal font-['Helvetica_Now_Display']">
-                    Continuar com Google
                   </span>
                 </motion.button>
               </form>
 
-              <div className="mt-8 text-center">
-                <p className="text-sm font-['Sequel_Sans'] text-zinc-500">
-                  Já tem uma conta?{' '}
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    onClick={() => navigate('/login')}
-                    className="text-yellow-400 hover:text-yellow-300 transition-colors"
-                  >
-                    Entrar agora
-                  </motion.button>
-                </p>
+              {/* Divider */}
+              <div className="flex items-center justify-center absolute top-[450px] left-1/2 -translate-x-1/2 w-[380px]">
+                <div className="h-px flex-1 opacity-50 bg-white"></div>
+                <div className="mx-4 text-zinc-500 opacity-50 text-sm">ou</div>
+                <div className="h-px flex-1 opacity-50 bg-white"></div>
+              </div>
+
+              {/* Google Button */}
+              <motion.button
+                whileHover={{ opacity: 1 }}
+                whileTap={{ opacity: 0.9 }}
+                onClick={handleGoogleSignup}
+                disabled={loading}
+                className={`w-[380px] h-14 absolute top-[480px] left-1/2 -translate-x-1/2 rounded-lg outline outline-1 outline-neutral-400 flex items-center justify-center ${loading ? 'opacity-30' : 'opacity-70'} hover:opacity-100 transition-all`}
+              >
+                <span className="text-white text-sm font-['Helvetica']">
+                  {loading ? 'Conectando...' : 'Continuar com Google'}
+                </span>
+              </motion.button>
+
+              {/* Já tem conta */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-[550px] text-base font-['Sequel Sans Display'] text-center whitespace-nowrap">
+                <span className="text-zinc-500">Já tem uma conta? </span>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  onClick={() => navigate('/login')}
+                  className="text-gradient"
+                >
+                  Entrar agora
+                </motion.button>
               </div>
             </motion.div>
           ) : (
@@ -238,25 +247,29 @@ export default function SignupPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="mt-16 px-[58px]"
             >
-              <h1 className="text-yellow-400 text-[38px] font-['Sequel_Sans'] font-semibold mb-6">
-                Complete seu perfil
-              </h1>
+              <div className="absolute left-1/2 -translate-x-1/2 top-[100px] flex flex-col items-center w-[380px]">
+                {/* Headline */}
+                <div className="text-[37px] leading-[44px] font-normal font-['Sequel Sans Display'] tracking-title text-gradient pb-1">
+                  Complete seu perfil
+                </div>
+                
+                {/* Subheadline */}
+                <div className="mt-2 text-zinc-500 text-lg font-normal font-['Sequel Sans Display']">
+                  Falta pouco! Precisamos apenas de mais algumas informações.
+                </div>
+              </div>
 
-              <h2 className="text-zinc-500 text-xl font-['Sequel_Sans'] mb-8">
-                Falta pouco! Precisamos apenas de mais algumas informações.
-              </h2>
-
-              <form onSubmit={handleStepTwo} className="space-y-6">
-                <div className="w-full h-[44px] px-6 flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400">
-                  <img src="/assets/icon-user.svg" alt="User Icon" className="w-5 h-5" />
+              <form onSubmit={handleStepTwo} className="w-full">
+                {/* Name Field */}
+                <div className="w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[230px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+                  <img src={iconSenha} alt="User Icon" className="w-7 h-7" />
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Seu nome"
-                    className="w-full bg-transparent text-white text-sm opacity-60 font-['Helvetica_Now_Display'] focus:outline-none"
+                    className="w-full bg-transparent text-white text-base opacity-60 font-['Helvetica'] focus:outline-none focus:opacity-100 transition-opacity"
                     required
                   />
                 </div>
@@ -265,20 +278,21 @@ export default function SignupPage() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="text-center text-red-500 text-sm font-sequel"
+                    className="absolute left-1/2 -translate-x-1/2 top-[290px] text-center text-red-500 text-sm font-['Helvetica'] w-[380px]"
                   >
                     {error}
                   </motion.div>
                 )}
 
+                {/* Continue Button */}
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleStepTwo}
+                  type="submit"
+                  whileHover={{ opacity: 0.9 }}
+                  whileTap={{ opacity: 0.95 }}
                   disabled={loading}
-                  className="w-full h-[52px] bg-gradient-to-t from-yellow-400 to-yellow-200 rounded-lg flex justify-center items-center shadow-lg"
+                  className={`w-[380px] h-14 absolute top-[320px] left-1/2 -translate-x-1/2 bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-200 rounded-lg flex items-center justify-center ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:from-yellow-200 hover:to-yellow-400'}`}
                 >
-                  <span className="text-black text-base font-medium font-['Sequel_Sans']">
+                  <span className="text-zinc-950 text-sm font-['Helvetica']">
                     {loading ? 'Salvando...' : 'Continuar'}
                   </span>
                 </motion.button>
@@ -287,26 +301,12 @@ export default function SignupPage() {
           )}
         </AnimatePresence>
 
-        {/* Terms and Privacy */}
-        <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center justify-center gap-2">
-          <div className="flex items-center gap-3">
-            <motion.a
-              href="/terms"
-              whileHover={{ scale: 1.05 }}
-              className="text-stone-300 text-xs font-['Sequel_Sans'] underline hover:text-yellow-400 transition-colors"
-            >
-              Termos de uso
-            </motion.a>
-            <motion.a
-              href="/privacy"
-              whileHover={{ scale: 1.05 }}
-              className="text-stone-300 text-xs font-['Sequel_Sans'] underline hover:text-yellow-400 transition-colors opacity-50"
-            >
-              Política de privacidade
-            </motion.a>
-          </div>
+        {/* Termos e Política */}
+        <div className="w-auto h-6 absolute left-1/2 -translate-x-1/2 top-[580px] flex flex-row items-center justify-center whitespace-nowrap">
+          <a href="#" className="text-stone-300 text-xs font-['Sequel Sans Display'] underline cursor-pointer hover:text-stone-200 transition-colors mr-8">Termos de uso</a>
+          <a href="#" className="text-stone-300 text-xs font-['Sequel Sans Display'] opacity-50 underline cursor-pointer hover:text-stone-200 transition-colors">Política de privacidade</a>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

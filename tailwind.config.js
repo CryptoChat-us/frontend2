@@ -41,6 +41,7 @@ module.exports = {
       },
       fontFamily: {
         'sequel': ['Sequel Sans', 'sans-serif'],
+        'power-grotesk': ['PowerGrotesk', 'sans-serif'],
       },
     },
   },
