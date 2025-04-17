@@ -64,24 +64,24 @@ const LoginPage = () => {
     {/* Logo and Title */}
     <div className="absolute left-1/2 -translate-x-1/2 top-[40px] flex items-center gap-3">
       <img src={logoCryptoChat} alt="Logo" className="w-8 h-8" />
-      <span className="text-white text-3xl font-power-grotesk font-light">Crypto Chat</span>
+      <span className="text-white text-3xl font-power-grotesk font-light crypto-chat-text">Crypto Chat</span>
     </div>
 
     <div className="absolute left-1/2 -translate-x-1/2 top-[100px] flex flex-col items-center w-[85%] sm:w-[380px] max-w-[380px]">
       {/* Headline */}
-      <div className="text-[37px] leading-[44px] font-normal font-['Sequel Sans Display'] tracking-title text-gradient pb-1">
+      <div className="text-[32px] sm:text-[37px] leading-[40px] sm:leading-[44px] font-normal font-['Sequel Sans Display'] tracking-title text-gradient pb-1 text-center">
         Sua IA Crypto Pessoal!
       </div>
 
       {/* Subheadline */}
-      <div className="mt-2 text-zinc-500 text-lg font-normal font-['Sequel Sans Display']">
+      <div className="mt-2 text-zinc-500 text-base sm:text-lg font-normal font-['Sequel Sans Display'] text-center">
         Invista melhor. Com inteligência, não achismo!
       </div>
     </div>
 
     <form onSubmit={handleLogin} className="w-full">
       {/* E-mail Field */}
-      <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[200px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+      <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[220px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
         <img src={iconEmail} alt="E-mail Icon" className="w-6 h-6" />
         <input
           type="email"
@@ -94,7 +94,7 @@ const LoginPage = () => {
       </div>
 
       {/* Password Field */}
-      <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[270px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+      <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[285px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
         <img src={iconSenha} alt="Senha Icon" className="w-7 h-7" />
         <input
           type="password"
@@ -111,7 +111,7 @@ const LoginPage = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="absolute top-[320px] left-1/2 -translate-x-1/2 w-[85%] sm:w-[380px] max-w-[380px] text-center text-red-500 text-xs font-['Helvetica']"
+          className="absolute top-[335px] left-1/2 -translate-x-1/2 w-[85%] sm:w-[380px] max-w-[380px] text-center text-red-500 text-xs font-['Helvetica']"
         >
           {error}
         </motion.div>
@@ -125,7 +125,7 @@ const LoginPage = () => {
         disabled={loading}
         className={`w-[85%] sm:w-[380px] max-w-[380px] h-14 absolute top-[350px] left-1/2 -translate-x-1/2 bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-200 rounded-lg flex items-center justify-center ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:from-yellow-200 hover:to-yellow-400'}`}
       >
-        <span className="text-zinc-950 text-sm font-['Helvetica']">
+        <span className="text-zinc-950 text-base font-['Helvetica']">
           {loading ? 'Entrando...' : 'Entrar'}
         </span>
       </motion.button>
@@ -144,15 +144,15 @@ const LoginPage = () => {
       whileTap={{ opacity: 0.9 }}
       onClick={handleGoogleLogin}
       disabled={loading}
-      className={`w-[85%] sm:w-[380px] max-w-[380px] h-14 absolute top-[460px] left-1/2 -translate-x-1/2 rounded-lg outline outline-1 outline-neutral-400 flex items-center justify-center ${loading ? 'opacity-30' : 'opacity-70'} hover:opacity-100 transition-all`}
+      className={`w-[85%] sm:w-[380px] max-w-[380px] h-14 absolute top-[465px] left-1/2 -translate-x-1/2 rounded-lg outline outline-1 outline-neutral-400 flex items-center justify-center ${loading ? 'opacity-30' : 'opacity-70'} hover:opacity-100 transition-all`}
     >
-      <span className="text-white text-sm font-['Helvetica']">
+      <span className="text-white text-base font-['Helvetica']">
         {loading ? 'Conectando...' : 'Continuar com Google'}
       </span>
     </motion.button>
 
     {/* Criar conta */}
-    <div className="absolute left-1/2 -translate-x-1/2 top-[540px] text-base font-['Sequel Sans Display'] text-center px-4 sm:px-0 w-full sm:whitespace-nowrap">
+    <div className="absolute left-1/2 -translate-x-1/2 top-[530px] text-base font-['Sequel Sans Display'] text-center px-4 sm:px-0 w-full whitespace-nowrap">
       <span className="text-zinc-500">Ainda não tem conta? </span>
       <motion.button
         whileHover={{ scale: 1.05 }}
@@ -164,8 +164,8 @@ const LoginPage = () => {
     </div>
 
     {/* Termos e Política */}
-    <div className="w-auto h-6 absolute left-1/2 -translate-x-1/2 top-[580px] flex flex-col sm:flex-row items-center justify-center text-center sm:whitespace-nowrap px-4 sm:px-0">
-      <a href="#" className="text-stone-300 text-xs font-['Sequel Sans Display'] underline cursor-pointer hover:text-stone-200 transition-colors mr-0 sm:mr-8 mb-2 sm:mb-0">Termos de uso</a>
+    <div className="w-auto h-auto absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-row items-center justify-center text-center whitespace-nowrap px-4 gap-8">
+      <a href="#" className="text-stone-300 text-xs font-['Sequel Sans Display'] underline cursor-pointer hover:text-stone-200 transition-colors">Termos de uso</a>
       <a href="#" className="text-stone-300 text-xs font-['Sequel Sans Display'] opacity-50 underline cursor-pointer hover:text-stone-200 transition-colors">Política de privacidade</a>
     </div>
   </div>

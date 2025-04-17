@@ -23,7 +23,7 @@ const MobilePromptBar: React.FC<MobilePromptBarProps> = ({ onSend }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSubmit())}
-          placeholder="Pergunte qualquer coisa sobre o mercado cripto..."
+          placeholder="Pergunte sobre cripto..."
           className="w-full py-3 pl-4 pr-24 bg-transparent text-white text-base font-['Sequel Sans Display'] outline-none resize-none max-h-24"
           rows={1}
         />

@@ -10,7 +10,6 @@ import AvatarMessage from "@/components/AvatarMessage";
 import MobileTopBar from "@/components/MobileTopBar";
 import MobileSidebar from "@/components/MobileSidebar";
 import MobilePromptBar from "@/components/MobilePromptBar";
-import MobileFooterBar from "@/components/MobileFooterBar";
 
 const Dashboard = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -175,8 +174,7 @@ const Dashboard = () => {
             )}
           </AnimatePresence>
           
-          {/* Mobile Footer Bar */}
-          <MobileFooterBar />
+          {/* Mobile Footer Bar removed as requested */}
           
           {/* Mobile Prompt Bar */}
           <MobilePromptBar onSend={handleSendMessage} />
