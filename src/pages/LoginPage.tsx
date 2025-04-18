@@ -31,7 +31,7 @@ const LoginPage = () => {
       if (err.message === 'Invalid login credentials') {
         setError('Email ou senha inválidos');
       } else {
-        setError('Erro ao fazer login: ' + err.message);
+        setError('Erro ao fazer login: ' + err.response.data.message);
       }
     } finally {
       setLoading(false);

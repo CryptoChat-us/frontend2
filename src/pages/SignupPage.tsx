@@ -54,7 +54,7 @@ export default function SignupPage() {
       if (err.message === 'User already registered') {
         setError('Este email já está registrado');
       } else {
-        setError('Erro ao criar conta: ' + err.message);
+        setError('Erro ao criar conta: ' + err.response.data.message);
       }
     } finally {
       setLoading(false);
@@ -68,37 +68,7 @@ export default function SignupPage() {
       setError('Por favor, insira seu nome');
       return;
     }
-
-    if (!user?.id) {
-      setError('Usuário não autenticado');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError('');
-      
-      // Update the profile with the user's name
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          name: name.trim(),
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
-
-      if (error) {
-        console.error('Profile update error:', error);
-        throw error;
-      }
-      
       navigate('/dashboard');
-    } catch (err: any) {
-      console.error('Profile update error:', err);
-      setError('Erro ao completar perfil: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleGoogleSignup = () => {

@@ -4,6 +4,7 @@ import { User } from '../types/User';
 interface AuthResponse {
   user: User;
   token: string;
+  success: boolean;
 }
 
 export const authService = {
@@ -12,6 +13,11 @@ export const authService = {
       login: email,
       password,
       language: 'pt'
+    },
+    {
+      headers : {
+        'Content-Type': 'application/json',
+      }
     });
     return response.data;
   },
@@ -22,12 +28,36 @@ export const authService = {
   },
 
   async signup(email: string, password: string): Promise<AuthResponse> {
+    const verify = await api.post<AuthResponse>('/api/v1/auth/register', {
+      email,
+      password,
+      login: email,
+      language: 'pt'
+    },
+    {
+      headers : {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const {success} = verify.data;
+    if( success == false){
+      return verify.data;
+    }
+
     const response = await api.post<AuthResponse>('/api/v1/auth/register', {
       email,
       password,
       login: email,
       language: 'pt'
+    },
+    {
+      headers : {
+         
+        'Content-Type': 'application/json',
+      }
     });
+    localStorage.setItem('cryptoChat.login', email);
     return response.data;
   },
 

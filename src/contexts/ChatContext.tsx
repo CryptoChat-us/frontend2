@@ -114,9 +114,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('cryptoChat.token') 
         },
         body: JSON.stringify({
-          email: window.localStorage.getItem('email'),
+          email: localStorage.getItem('cryptoChat.login'),
           message: message,
           topic: null,
         }),

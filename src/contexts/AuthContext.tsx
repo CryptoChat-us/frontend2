@@ -4,6 +4,7 @@ import { authService } from '../services/authService';
 
 interface AuthContextType {
   user: User | null;
+  token: String | null;
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -15,14 +16,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<String | null>(null);
   const [loading, setLoading] = useState(false);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const { user: u, token } = await authService.login(email, password);
+      const { user: u, token: token } = await authService.login(email, password);
       localStorage.setItem('cryptoChat.token', token);
       setUser(u);
+      setToken(token);
     } finally {
       setLoading(false);
     }
@@ -31,9 +34,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signup = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const { user: u, token } = await authService.signup(email, password);
+      const { user: u, token: token } = await authService.signup(email, password);
       localStorage.setItem('cryptoChat.token', token);
       setUser(u);
+      setToken(token);
     } finally {
       setLoading(false);
     }
@@ -48,7 +52,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
+        token,
+        isAuthenticated: !!token,
         loading,
         login,
         signup,
