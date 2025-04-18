@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { User } from '@supabase/supabase-js';
-import { supabase } from '../services/supabaseClient';
+import { User } from '../types/User';
+import { authService } from '../services/authService';
 
 interface AuthContextType {
   user: User | null;
@@ -19,28 +19,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Configura o listener de mudanças na autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    // Verifica o estado inicial da autenticação usando o token armazenado
+    const checkAuthStatus = async () => {
+      const token = localStorage.getItem('cryptoChat.token');
+      if (token) {
+        try {
+          const userData = await authService.validateToken(token);
+          setUser(userData);
+        } catch (error) {
+          console.error('Token validation error:', error);
+          localStorage.removeItem('cryptoChat.token');
+        }
+      }
       setLoading(false);
-    });
+    };
 
-    // Verifica o estado inicial da autenticação
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    checkAuthStatus();
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
+      const response = await authService.login(email, password);
+      localStorage.setItem('cryptoChat.token', response.token);
+      setUser(response.user);
     } catch (error) {
       throw error;
     }
@@ -48,10 +49,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginWithGoogle = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
-      if (error) throw error;
+      const response = await authService.loginWithGoogle();
+      localStorage.setItem('cryptoChat.token', response.token);
+      setUser(response.user);
     } catch (error) {
       throw error;
     }
@@ -59,26 +59,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) throw error;
-
-      // Create initial profile
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([{ 
-            id: data.user.id,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          }]);
-
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-        }
-      }
+      const response = await authService.signup(email, password);
+      localStorage.setItem('cryptoChat.token', response.token);
+      setUser(response.user);
     } catch (error) {
       throw error;
     }
@@ -86,8 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      localStorage.removeItem('cryptoChat.token');
+      setUser(null);
     } catch (error) {
       throw error;
     }

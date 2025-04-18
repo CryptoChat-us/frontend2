@@ -94,7 +94,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     loadHistory();
   }, []);
 
-  const sendMessage = async (content: string) => {
+  const sendMessage = async (message: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -102,7 +102,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // Add user message
       const userMessage: Message = {
         id: Date.now().toString(),
-        content,
+        content: message,
         type: 'text',
         role: 'user',
         created_at: new Date().toISOString()
@@ -110,36 +110,37 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       setMessages(prev => [...prev, userMessage]);
 
       // Get AI response
-      const response = await chatService.sendMessage(content);
-      
-      // Parse response for media content
+      const response = await fetch(`https://backend-qb2r.onrender.com/call-chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: window.localStorage.getItem('email'),
+          message: message,
+          topic: null,
+        }),
+      });
+
+      const data = await response.json();
       let botMessage: Message;
-      try {
-        if (response.content.includes('mediaData')) {
-          const parsedContent = JSON.parse(response.content);
-          botMessage = {
-            id: response.id || Date.now().toString(),
-            type: 'media',
-            content: parsedContent.text || '',
-            role: 'bot',
-            created_at: response.created_at || new Date().toISOString(),
-            mediaData: parsedContent.mediaData
-          };
-        } else {
-          botMessage = {
-            id: response.id || Date.now().toString(),
-            type: 'text',
-            content: response.content,
-            role: 'bot',
-            created_at: response.created_at || new Date().toISOString()
-          };
-        }
-        
-        setMessages(prev => [...prev, botMessage]);
-      } catch (parseError) {
-        console.error('Error parsing bot response:', parseError);
-        throw new Error('Erro ao processar resposta do bot');
+
+      if (response.ok) {
+        try {
+            botMessage = {
+              id: Date.now().toString(),
+              type: 'text',
+              content: data.message,
+              role: 'bot',
+              created_at: new Date().toISOString()
+            };
+          } catch (parseError) {
+            console.error('Error parsing bot response:', parseError);
+            throw new Error('Erro ao processar resposta do bot');
+          }
       }
+        
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
       let errorMessage = 'Desculpe, ocorreu um erro ao processar sua mensagem.';

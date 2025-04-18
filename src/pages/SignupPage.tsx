@@ -145,7 +145,7 @@ export default function SignupPage() {
 
               <form onSubmit={handleStepOne} className="w-full">
                 {/* E-mail Field - Repositioned for mobile */}
-                <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[150px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
+                <div className="w-[85%] sm:w-[380px] max-w-[380px] h-14 px-4 absolute left-1/2 -translate-x-1/2 top-[155px] flex items-center gap-2.5 rounded-lg outline outline-1 outline-neutral-400 focus-within:outline-yellow-400 transition-colors">
                   <img src={iconEmail} alt="E-mail Icon" className="w-6 h-6" />
                   <input
                     type="email"
