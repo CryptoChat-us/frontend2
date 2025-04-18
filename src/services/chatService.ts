@@ -1,5 +1,12 @@
 import api from './api';
-import { supabase, Message } from './supabaseClient';
+
+export interface Message {
+  id: string;
+  content: string;
+  role: 'user' | 'bot';
+  created_at: string;
+  user_id?: string;
+}
 
 interface ChatMessageResponse {
   answer: string;
@@ -16,13 +23,8 @@ export interface ChatError {
 export const chatService = {
   async sendMessage(content: string): Promise<Message> {
     try {
-      // Obtém o usuário atual do Supabase
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw { message: 'User not authenticated', code: 'AUTH_ERROR' } as ChatError;
-
       // Envia a mensagem para o backend Spring
       const response = await api.post<ChatMessageResponse>('/api/chat/message', {
-        login: user.email,
         message: content
       });
 
@@ -30,43 +32,14 @@ export const chatService = {
         throw { message: 'Empty response from server', code: 'API_ERROR' } as ChatError;
       }
 
-      // Salva a mensagem do usuário no Supabase
-      const { error: userError } = await supabase
-        .from('messages')
-        .insert([
-          { user_id: user.id, content, role: 'user' }
-        ]);
-
-      if (userError) {
-        console.error('Error saving user message:', userError);
-      }
-
-      // Salva a resposta do bot no Supabase
-      const { data: botMessage, error: insertError } = await supabase
-        .from('messages')
-        .insert([
-          { 
-            user_id: user.id, 
-            content: response.data.answer, 
-            role: 'bot',
-            created_at: response.data.timestamp || new Date().toISOString()
-          }
-        ])
-        .select()
-        .single();
-
-      if (insertError) {
-        console.error('Error saving bot message:', insertError);
-        // Retorna a resposta mesmo se falhar ao salvar no Supabase
-        return {
-          id: response.data.id || Date.now().toString(),
-          content: response.data.answer,
-          role: 'bot',
-          created_at: response.data.timestamp || new Date().toISOString()
-        } as Message;
-      }
-
-      return botMessage as Message;
+      // O backend agora cuida do armazenamento das mensagens
+      // Retorna a resposta formatada como uma mensagem
+      return {
+        id: response.data.id || Date.now().toString(),
+        content: response.data.answer,
+        role: 'bot',
+        created_at: response.data.timestamp || new Date().toISOString()
+      } as Message;
     } catch (error) {
       console.error('Error in sendMessage:', error);
       
@@ -117,42 +90,48 @@ export const chatService = {
 
   async getHistory(): Promise<Message[]> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw { message: 'User not authenticated', code: 'AUTH_ERROR' } as ChatError;
-
-      const { data: messages, error } = await supabase
-        .from('messages')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: true });
-
-      if (error) {
-        throw { message: 'Error loading history', code: 'DB_ERROR' } as ChatError;
-      }
-
-      return messages as Message[];
+      const response = await api.get<Message[]>('/api/chat/history');
+      return response.data;
     } catch (error) {
       console.error('Error in getHistory:', error);
-      throw error;
+      
+      // Erro de autenticação
+      if ((error as any).response?.status === 401) {
+        throw { 
+          message: 'Sua sessão expirou. Por favor, faça login novamente.', 
+          code: 'AUTH_ERROR',
+          status: 401 
+        } as ChatError;
+      }
+      
+      throw {
+        message: (error as any).message || 'Erro ao carregar histórico',
+        code: 'API_ERROR',
+        status: (error as any).response?.status
+      } as ChatError;
     }
   },
 
   async clearHistory(): Promise<void> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw { message: 'User not authenticated', code: 'AUTH_ERROR' } as ChatError;
-
-      const { error } = await supabase
-        .from('messages')
-        .delete()
-        .eq('user_id', user.id);
-
-      if (error) {
-        throw { message: 'Error clearing history', code: 'DB_ERROR' } as ChatError;
-      }
+      await api.delete('/api/chat/history');
     } catch (error) {
       console.error('Error in clearHistory:', error);
-      throw error;
+      
+      // Erro de autenticação
+      if ((error as any).response?.status === 401) {
+        throw { 
+          message: 'Sua sessão expirou. Por favor, faça login novamente.', 
+          code: 'AUTH_ERROR',
+          status: 401 
+        } as ChatError;
+      }
+      
+      throw {
+        message: (error as any).message || 'Erro ao limpar histórico',
+        code: 'API_ERROR',
+        status: (error as any).response?.status
+      } as ChatError;
     }
   }
 };
