@@ -7,7 +7,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, name: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -28,10 +28,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const { user: u, token } = await authService.signup(email, email, password, name);
+      const { user: u, token } = await authService.signup(email, password);
       localStorage.setItem('cryptoChat.token', token);
       setUser(u);
     } finally {
