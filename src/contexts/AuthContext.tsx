@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from '../types/User';
 import { authService } from '../services/authService';
 
@@ -7,8 +7,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -16,64 +15,33 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Verifica o estado inicial da autenticação usando o token armazenado
-    const checkAuthStatus = async () => {
-      const token = localStorage.getItem('cryptoChat.token');
-      if (token) {
-        try {
-          const userData = await authService.validateToken(token);
-          setUser(userData);
-        } catch (error) {
-          console.error('Token validation error:', error);
-          localStorage.removeItem('cryptoChat.token');
-        }
-      }
-      setLoading(false);
-    };
-
-    checkAuthStatus();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const login = async (email: string, password: string) => {
+    setLoading(true);
     try {
-      const response = await authService.login(email, password);
-      localStorage.setItem('cryptoChat.token', response.token);
-      setUser(response.user);
-    } catch (error) {
-      throw error;
+      const { user: u, token } = await authService.login(email, password);
+      localStorage.setItem('cryptoChat.token', token);
+      setUser(u);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const loginWithGoogle = async () => {
+  const signup = async (email: string, password: string, name: string) => {
+    setLoading(true);
     try {
-      const response = await authService.loginWithGoogle();
-      localStorage.setItem('cryptoChat.token', response.token);
-      setUser(response.user);
-    } catch (error) {
-      throw error;
+      const { user: u, token } = await authService.signup(email, email, password, name);
+      localStorage.setItem('cryptoChat.token', token);
+      setUser(u);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const signup = async (email: string, password: string) => {
-    try {
-      const response = await authService.signup(email, password);
-      localStorage.setItem('cryptoChat.token', response.token);
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      localStorage.removeItem('cryptoChat.token');
-      setUser(null);
-    } catch (error) {
-      throw error;
-    }
+  const logout = () => {
+    localStorage.removeItem('cryptoChat.token');
+    setUser(null);
   };
 
   return (
@@ -83,7 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         loading,
         login,
-        loginWithGoogle,
         signup,
         logout,
       }}
@@ -95,8 +62,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
   }
   return context;
 }
