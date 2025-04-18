@@ -1,35 +1,13 @@
-import { createClient } from '@supabase/supabase-js';
+/**
+ * ⚠️ Supabase foi desativado do front-end.
+ * Toda comunicação com o banco agora é feita pelo backend seguro em Render.
+ *
+ * Se você está vendo este arquivo, não o utilize.
+ * Use o arquivo `api.ts` com axios para interagir com o backend.
+ */
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Tipos para as tabelas do Supabase
-export interface User {
-  id: string;
-  email: string;
-  created_at: string;
-}
-
-export interface Message {
-  id: string;
-  user_id: string;
-  content: string;
-  type: 'text' | 'media';
-  role: 'user' | 'bot';
-  created_at: string;
-  mediaData?: MediaData[];
-  error?: boolean;
-}
-
-export interface MediaData {
-  symbol: string;
-  name: string;
-  percentage: number;
-  trend: 'up' | 'down';
-}
+export const supabase = new Proxy({}, {
+  get() {
+    throw new Error('❌ Supabase client desativado. Use a API do backend via `services/api.ts`.');
+  },
+});
