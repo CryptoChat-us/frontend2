@@ -1,11 +1,17 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { chatService, ChatError } from '../services/chatService';
+import api from '../services/api';
 
 interface MediaData {
   symbol: string;
   name: string;
   percentage: number;
   trend: 'up' | 'down';
+}
+
+interface MessageResponse {
+  status: string;
+  message: string;
 }
 
 interface Message {
@@ -109,24 +115,22 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       };
       setMessages(prev => [...prev, userMessage]);
 
-      // Get AI response
-      const response = await fetch(`https://backend-qb2r.onrender.com/call-chat`, {
-        method: 'POST',
-        headers: {
+      const response = await api.post<MessageResponse>('/call-chat', {
+        email: localStorage.getItem('cryptoChat.login'),
+        message: message,
+        topic: null,
+      },
+      {
+        headers : {
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('cryptoChat.token') 
-        },
-        body: JSON.stringify({
-          email: localStorage.getItem('cryptoChat.login'),
-          message: message,
-          topic: null,
-        }),
-      });
+        }
+      });;
 
-      const data = await response.json();
+      const data = response.data;
       let botMessage: Message;
 
-      if (response.ok) {
+      if (data.status = 'success') {
         try {
             botMessage = {
               id: Date.now().toString(),
