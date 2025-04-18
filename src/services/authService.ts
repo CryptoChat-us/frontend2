@@ -8,7 +8,7 @@ interface AuthResponse {
 
 export const authService = {
   async login(email: string, password: string): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/login', {
+    const response = await api.post<AuthResponse>('/api/v1/auth/login', {
       login: email,
       password,
       language: 'pt'
@@ -17,12 +17,12 @@ export const authService = {
   },
 
   async loginWithGoogle(): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/google');
+    const response = await api.post<AuthResponse>('/api/v1/auth/google');
     return response.data;
   },
 
   async signup(email: string, password: string): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/register', {
+    const response = await api.post<AuthResponse>('/api/v1/auth/register', {
       email,
       password,
       login: email,
@@ -32,7 +32,7 @@ export const authService = {
   },
 
   async validateToken(token: string): Promise<User> {
-    const response = await api.post<User>('/auth/validate', { token });
+    const response = await api.post<User>('/api/v1/auth/validate', { token });
     return response.data;
   },
 };
